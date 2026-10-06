@@ -1,0 +1,4 @@
+interface:
+  display_name: "Onsite Sitemap Audit"
+  short_description: "Audit sitemaps with shared SF config and Excel reporting"
+  default_prompt: "Use $onsite-audit-sitemap to audit this site's sitemaps with my shared onsite config and produce the agreed Excel report."

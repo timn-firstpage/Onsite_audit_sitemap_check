@@ -1,0 +1,8 @@
+runs/
+outputs/
+config.local.json
+*.seospider
+*.xlsx
+__pycache__/
+.venv/
+.env
