@@ -36,7 +36,7 @@
 | **11.4 是否使用 lastmod？** | 在实际 XML 中查找 `<lastmod>` 元素，index 中的元素也计入；不要求全量覆盖或日期真实性验证，注释中提到 lastmod 不计入。 | **√**：找到实际元素即通过。**X**：相关 XML 已完整检查且没有，标注为可选字段优化建议。**Human check**：只检查部分文件且尚未发现。**N/A**：未发现 sitemap。 |
 | **11.5 robots 阻挡／noindex 页面是否已排除？** | 将 sitemap 页面 URL 与有效 Googlebot robots 规则、SF meta robots 和 HTTP `X-Robots-Tag` 的 noindex 结果比对。按实际规则优先级判断；nofollow 本身不算 noindex。 | **√**：完成相关检查，没有发现阻挡／noindex URL。**X**：确认有此类 URL 留在 sitemap，列出地址和原因。**Human check**：权限、指令或数据缺失。**N/A**：未发现 sitemap。Sitemap 文件自身的 noindex 不代表里面的页面也 noindex。 |
 | **11.6 是否避免分页 URL？** | 将 SF **Pagination → Paginated 2+ Pages** 的 Address 与 sitemap URL 比对；再按实际 `/page/2/`、`?page=2`、`?p=2` 等格式补查，确认候选确实是分页。 | **√**：完成比对／格式检查，没有第 2 页及以后的分页。**X**：确认分页出现在 sitemap，按本 checklist 报告。**Human check**：覆盖不足。**N/A**：未发现 sitemap。First Page 不自动判错，p 参数不一定代表分页。 |
-| **11.7 是否排除 non-indexable URL？** | 确认 sitemap 已加载、相关 crawl／Crawl Analysis 完成，再读取 **Non-Indexable URLs in Sitemap**，结合状态码、noindex、canonicalised 等原因。 | **√**：已完成相关分析，结果为 0。**X**：确认存在非索引 URL，按原因建议修复、替换或移除。**Human check**：分析未运行、缺列／导出、无法解释的空白／NaN，或临时访问异常尚未核实。**N/A**：未发现 sitemap。 |
+| **11.7 是否排除 non-indexable URL？** | 查看 SF **Non-Indexable URLs in Sitemap**；若使用全站 non-indexable 清单，则与 sitemap 页面 URL 比对。沿用简单判断，不额外要求确认 Crawl Analysis／完整 crawl 才接受空结果。 | **√**：在现有结果中找不到对应 URL、结果为 0、空白、null 或 NaN，视为没有。**X**：找到 sitemap 内的 non-indexable URL，列出问题并进入第二张表。**Human check**：完全没有可用结果／比对数据，或读取失败。**N/A**：未发现 sitemap。已知的问题 URL 不会因另一空结果被忽略。 |
 | **11.8 电商 sitemap 是否包含产品图片？** | 先按真实产品／销售功能判断是否电商。抽查代表性产品条目，默认最多 3 个；检查 `<image:image>`／`<image:loc>`，同时考虑独立 image sitemap。记录抽查 URL 和数量。 | **√**：抽查成功，至少一个抽查产品含适当图片 URL，注明“抽查通过”。**X**：确认完整相关 sitemap 中完全没有产品图片条目。**Human check**：抽查未通过，但未确认全无，或适用性／文件读取不明。**N/A**：非电商或未发现 sitemap。 |
 | **11.9 是否提交 GSC 且无处理错误？** | 有实际 GSC 连接及权限时，检查正确 property 的 sitemap 提交记录、处理状态及最后读取时间。无权限时提供人工检查步骤，不自动提交。 | **√**：已提交且处理成功。**X**：确认未提交或有处理错误。**Human check**：未连接、无权限或状态证据不足，请到 GSC → Sitemaps 检查。**N/A**：未发现 sitemap。处理成功不等于所有页面已索引。 |
 
@@ -62,7 +62,7 @@
 
 Checklist 始终输出九项；Initial Check 是本次初审结果，不要求额外做一次复审。Findings 放结论和操作，Coverage 放证据范围，不重复长篇描述。11. Sitemap 放已确认的 X 问题详情；Human check、通过和 N/A 保留在 Checklist，无问题时第二页仍保留表头。
 
-未找到 sitemap 时，依赖它的项目按约定填 N/A 并解释原因；已知文件无法读取、分析没跑完或 GSC 无权限用 Human check。不能将未检查的空白／NaN 当作通过。文件名和检查判定规则不变。
+未找到 sitemap 时，依赖它的项目按约定填 N/A 并解释原因；已知文件无法读取或 GSC 无权限用 Human check。**11.7 按用户指定例外：现有结果找不到 URL、为空或 NaN 就通过，不额外加分析完成门槛。** 完全没有可用数据或工具读取失败仍需 Human check。Coverage 如实记录实际来源，不把初筛通过说成 Google 已索引。文件名与两张表的 schema 不变。
 
 完整字段、命名、截图和归档约定见 [output contract](references/output-contract.md)。
 

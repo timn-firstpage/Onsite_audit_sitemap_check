@@ -6,7 +6,7 @@ These decisions reflect the user's final instructions from 2026-10-06. Keep the 
 
 `√`: the agreed test passed. `X`: a confirmed checklist failure. `N/A`: genuinely inapplicable, or a dependent check after unsuccessful sitemap discovery under this user's convention. `Human check`: insufficient evidence, failed fetch, incomplete analysis or unavailable access. Every N/A/Human check includes a reason; Human check also includes a concrete next action.
 
-For broad negative claims (no pagination/no non-indexable URLs/no product images), require adequate complete relevant evidence. Positive lastmod presence and successful product-image sampling use the explicitly relaxed gates below. A confirmed issue can be X even when other URLs remain untested; describe the remaining scope.
+For broad negative claims (no pagination/no product images), require adequate complete relevant evidence. Lastmod presence, successful product-image sampling and 11.7's empty-result pass use the explicitly relaxed gates below. A confirmed issue can be X even when other URLs remain untested; describe the remaining scope.
 
 ## 11.1 Does an XML sitemap(s) exist?
 
@@ -44,7 +44,9 @@ Any confirmed page 2+ in sitemap => X under this user's checklist; otherwise √
 
 ## 11.7 Have non-indexable URLs been removed?
 
-Use SF “Non-Indexable URLs in Sitemap” with response/status/directive/canonical evidence as available. Verify sitemap loading, crawl coverage and required Crawl Analysis completion before interpreting the result. A verified complete result of zero rows => √; one or more confirmed listed non-indexable URLs => X. Missing column/export, unexplained NaN or an unrun analysis => Human check. Known confirmed defects remain X even if other coverage is missing.
+Use the available SF “Non-Indexable URLs in Sitemap” result. Under the user's revised simple rule, no matching URL records, an empty result, zero, null or NaN => √: “No non-indexable URLs found in the supplied sitemap results.” One or more listed non-indexable URL records => X. Do not require a separate crawl-completion, Crawl Analysis or full-coverage verification before accepting an empty result, and do not turn that empty/NaN result into Human check. If using a broader SF non-indexable URL export, match its URLs against the sitemap page URL inventory; no matches => √, matches => X.
+
+This rule concerns absence of records in available evidence, not an inability to access any evidence. No SF result/export or usable comparison data at all, or a failed tool read => Human check. No discovered sitemap => N/A. Preserve known contradictory URL evidence as X rather than overriding it with an empty filter. State the actual source/coverage in Checklist Coverage; a simplified pass does not establish Google index status or verified full-crawl completion. Only X enters the second worksheet.
 
 Report 3xx/4xx/5xx, noindex and canonical-to-other-URL reasons. Distinguish transient 403/429/timeouts/tool failures from confirmed durable site defects and suggest verification when needed. Do not delete important pages merely because they are broken: recommend repair or replacement/removal according to intended indexing. Missing canonical alone is not non-indexable. SF indexability is not actual Google index status. Checks 11.5/11.7 may overlap; keep both results without duplicating long evidence lists.
 

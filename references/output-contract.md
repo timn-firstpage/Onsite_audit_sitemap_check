@@ -28,7 +28,7 @@ Export confirmed X findings into this detail sheet. Each X check must have an as
 
 Screenshots are optional: embed real, relevant screenshots if available, otherwise N/A. Do not create fake screenshots or force a browser session just to populate the column. Preserve screenshot evidence files beside the report when used. Keep rows tall enough for images, wrap text, freeze headers, use readable column widths and restrained status colors in Initial Check. Store all customer-supplied strings as literal text (not formulas). Complete raw evidence lives in the run archive. Review both worksheet layouts before delivery.
 
-For sample-based image passes, explicitly say “sample passed” and sample count. For 11.2 say “preliminary screen passed”. Empty SF filters pass only with completed relevant analysis. Reports with unresolved checks must not be described as an overall pass.
+For sample-based image passes, explicitly say “sample passed” and sample count. For 11.2 say “preliminary screen passed”. For 11.7, an available empty/no-match/zero/null/NaN result passes without a separate analysis-completion gate; say no non-indexable URLs were found in the supplied sitemap results and record the actual source in Coverage. Missing all usable evidence or a failed read remains Human check. Reports with unresolved checks must not be described as an overall pass.
 
 ## Agent-reviewed findings.json
 
