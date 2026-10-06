@@ -6,15 +6,27 @@ Create a unique directory beneath configured run_root for each delivery. Do not 
 
 ## Workbook
 
-Exactly one sheet, `11. Sitemap`, and these four columns in order:
+Exactly two sheets in this order. Do not add columns, hide a status column, or replace these headers with another onsite audit's schema.
+
+### 1. Checklist
+
+| Item No. | Item Name | Initial Check | Findings | Coverage |
+| --- | --- | --- | --- | --- |
+| 11.1 | Does an XML sitemap(s) exist? | √ | Valid XML sitemap found. | robots.txt declaration; XML parsed |
+
+Always include 11.1–11.9 exactly once in numeric order. Item Name is the corresponding complete checklist question from audit-rules.md, translated if requested. Initial Check contains exactly `√`, `X`, `N/A` or `Human check`; it is this run's assessment, not a requirement for a second review stage. Findings combines the concise conclusion and necessary action; Human check explains the missing/failed evidence and next action, N/A explains inapplicability/dependency. Coverage owns checked sources, counts, sampling and remaining scope. Avoid repeating this inventory in Findings.
+
+### 2. 11. Sitemap
+
+Preserve the originally requested detail schema:
 
 | Sitemaps | URLs Example | Instructions | Screenshots (If Applicable) |
 | --- | --- | --- | --- |
-| 11.1 Does an XML sitemap(s) exist? | Actual sitemap URL or N/A | √ — Valid XML sitemap found. | N/A or real evidence image |
+| 11.7 Redirected URL in sitemap | Actual affected URL | Explain the redirect and replace with the verified final URL. | N/A or real evidence image |
 
-One row for each of checks 11.1–11.9, including passes and unresolved items. Use the check question from audit-rules.md in Sitemaps. Instructions starts with `√`, `X`, `N/A` or `Human check`, followed by a concise finding and necessary action. No additional status/severity columns or extra sheets. Multiple representative actual URLs may be separated by line breaks. Never put example.com or invented URLs in a customer report. NA values need a reason in Instructions.
+Export confirmed X findings into this detail sheet. Each X check must have an associated detail row; group by check and shared cause/action, splitting materially different fixes when needed. Sitemaps contains the check number and problem label. Instructions contains the problem and concrete correction, without duplicating a status prefix. Passes, N/A and unresolved Human check details belong to Checklist only. Keep these four headers even when there are no confirmed issues. Multiple representative actual URLs may be separated by line breaks. Never put example.com or invented URLs in a customer report; use N/A when no affected URL exists (such as unsuccessful discovery), explaining the checked sources in Checklist Coverage.
 
-Screenshots are optional: embed real, relevant screenshots if available, otherwise N/A. Do not create fake screenshots or force a browser session just to populate the column. Preserve screenshot evidence files beside the report when used. Keep rows tall enough for images, wrap text, freeze headers, use readable column widths and restrained status colors. Store all customer-supplied strings as literal text (not formulas). Keep concise evidence references/coverage in Instructions or cell notes without adding columns; complete raw evidence lives in the run archive.
+Screenshots are optional: embed real, relevant screenshots if available, otherwise N/A. Do not create fake screenshots or force a browser session just to populate the column. Preserve screenshot evidence files beside the report when used. Keep rows tall enough for images, wrap text, freeze headers, use readable column widths and restrained status colors in Initial Check. Store all customer-supplied strings as literal text (not formulas). Complete raw evidence lives in the run archive. Review both worksheet layouts before delivery.
 
 For sample-based image passes, explicitly say “sample passed” and sample count. For 11.2 say “preliminary screen passed”. Empty SF filters pass only with completed relevant analysis. Reports with unresolved checks must not be described as an overall pass.
 
@@ -28,6 +40,7 @@ For sample-based image passes, explicitly say “sample passed” and sample cou
   "checks": [
     {
       "id": "11.1",
+      "item_name": "Does an XML sitemap(s) exist?",
       "result": "√",
       "urls": ["https://example.com/sitemap.xml"],
       "finding": "Valid XML sitemap found.",
@@ -40,7 +53,7 @@ For sample-based image passes, explicitly say “sample passed” and sample cou
 }
 ```
 
-The example shows one row only; actual input must contain all nine IDs exactly once. Every row requires the listed keys. X and Human check require an action. Human check finding explains the missing/failed evidence; N/A finding explains applicability/dependency. Screenshot paths refer to real local files relative to findings.json. Result labels are fixed; prose follows report language. The validator checks shape and required values only, not evidence truth, XML, image validity or workbook layout.
+The example shows one row only; actual input must contain all nine IDs exactly once. Every row requires the listed keys. Map id/item_name/result to Item No./Item Name/Initial Check; finding plus action to Findings; coverage to Coverage. For X rows, use the same reviewed finding/action/urls/screenshots to populate 11. Sitemap, splitting by cause/action where necessary. X and Human check require an action. Human check finding explains the missing/failed evidence; N/A finding explains applicability/dependency. Screenshot paths refer to real local files relative to findings.json. Result labels are fixed; prose follows report language. The validator checks shape and required values only, not evidence truth, XML, image validity or workbook layout. Older records without item_name must be completed from the known checklist before export.
 
 ## Suggested local archive
 

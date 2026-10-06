@@ -45,7 +45,7 @@ def validate(data):
         prefix = f"row {index} ({ident})"
         if not isinstance(check.get("result"), str) or check["result"] not in RESULTS:
             errors.append(f"{prefix}: invalid result")
-        for key in ("finding", "coverage"):
+        for key in ("item_name", "finding", "coverage"):
             if not isinstance(check.get(key), str) or not check[key].strip():
                 errors.append(f"{prefix}: {key} required")
         action = check.get("action")

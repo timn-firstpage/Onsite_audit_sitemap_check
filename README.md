@@ -46,13 +46,23 @@
 
 文件名：**`{site name}_sitemap_audit_{date}.xlsx`**，date 为 `YYYY-MM-DD`。
 
-一个 worksheet：**11. Sitemap**。保留用户指定四列，不额外增加 Result 列；状态放在 Instructions 开头。
+两个 worksheet，按以下顺序输出。
+
+**1. Checklist — 九项检查总表**
+
+| Item No. | Item Name | Initial Check | Findings | Coverage |
+| --- | --- | --- | --- | --- |
+| 11.1–11.9 | 对应 checking list 的完整检查名称 | √ / X / N/A / Human check | 简洁结论、问题或缺口，以及必要的下一步 | 已检查来源、范围、数量、抽样及未覆盖部分 |
+
+**2. 11. Sitemap — 具体问题与处理建议**
 
 | Sitemaps | URLs Example | Instructions | Screenshots (If Applicable) |
 | --- | --- | --- | --- |
-| 检查编号及问题 | 实际 sitemap／受影响页面 URL | √ / X / N/A / Human check，加结论和必要操作 | 适用时插入真实截图，否则 N/A |
+| 检查编号及具体问题 | 实际 sitemap／受影响页面 URL | 具体问题说明及修正建议 | 适用时插入真实截图，否则 N/A |
 
-九项均输出。未找到 sitemap 时，依赖它的项目按约定填 N/A 并解释原因；已知文件无法读取、分析没跑完或 GSC 无权限用 Human check。不能将未检查的空白／NaN 当作通过。
+Checklist 始终输出九项；Initial Check 是本次初审结果，不要求额外做一次复审。Findings 放结论和操作，Coverage 放证据范围，不重复长篇描述。11. Sitemap 放已确认的 X 问题详情；Human check、通过和 N/A 保留在 Checklist，无问题时第二页仍保留表头。
+
+未找到 sitemap 时，依赖它的项目按约定填 N/A 并解释原因；已知文件无法读取、分析没跑完或 GSC 无权限用 Human check。不能将未检查的空白／NaN 当作通过。文件名和检查判定规则不变。
 
 完整字段、命名、截图和归档约定见 [output contract](references/output-contract.md)。
 

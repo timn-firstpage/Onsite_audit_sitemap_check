@@ -1,6 +1,6 @@
 ---
 name: onsite-audit-sitemap
-description: Audit website sitemaps using Screaming Frog evidence and bounded sitemap checks, applying the agreed nine-check onsite checklist and producing a four-column Excel report. Reuse the shared onsite SF configuration workflow.
+description: Audit website sitemaps using Screaming Frog evidence and bounded sitemap checks, applying the agreed nine-check onsite checklist and producing a two-sheet Excel report. Reuse the shared onsite SF configuration workflow.
 ---
 
 # Onsite Sitemap Audit
@@ -23,11 +23,11 @@ Produce `{site name}_sitemap_audit_{YYYY-MM-DD}.xlsx` for a supplied site using 
 4. Apply the agreed simple gates: dynamic is preliminary screening; lastmod presence passes; pagination inclusion fails the local checklist; product-image sample success passes. Label heuristic/sample scope honestly without imposing additional pass conditions.
 5. Use `√`, `X`, `N/A`, `Human check`. Confirmed findings survive partial coverage; unknown data never becomes a pass. When no sitemap is discovered, 11.1 is X with manual-check action and dependent checks are N/A with the discovery limitation. If a known sitemap cannot be read, affected checks are Human check rather than N/A.
 6. Record all nine decisions in findings.json using the output contract. Run `python scripts/validate_findings.py <findings.json>`. This validates the record structure, not the truth of the audit.
-7. Use the available spreadsheet skill/runtime to author the exact four-column workbook, embed real screenshots where useful, and verify readable layout. Always deliver supported findings and explicit gaps; do not wait indefinitely for missing exports, GSC access or a manual crawl. Resume from the same evidence when provided.
+7. Use the available spreadsheet skill/runtime to author the two-sheet workbook with the exact headers below, embed real screenshots where useful, and verify readable layout. Always deliver supported findings and explicit gaps; do not wait indefinitely for missing exports, GSC access or a manual crawl. Resume from the same evidence when provided.
 
 ## Delivery boundaries
 
-- One worksheet: `11. Sitemap`. Exact headers: `Sitemaps`, `URLs Example`, `Instructions`, `Screenshots (If Applicable)`. Put the status at the start of Instructions; do not add a Result column or borrow another audit's workbook schema.
+- Exactly two worksheets, in order: `Checklist` with `Item No.`, `Item Name`, `Initial Check`, `Findings`, `Coverage`; then `11. Sitemap` with `Sitemaps`, `URLs Example`, `Instructions`, `Screenshots (If Applicable)`. Checklist contains all nine checks; Initial Check owns the result. The second sheet contains confirmed X finding details. Keep Human check reasons/actions in Checklist, and preserve second-sheet headers even with no issues. Follow the output contract; do not substitute another audit's column names.
 - Preserve the filename, date/timezone and language rules in the output contract. Save reports/raw evidence in a unique run directory, never overwrite a prior run and never commit customer evidence.
 - No website/configuration repair, GSC submission, automatic crawling, recurring monitoring, or external messaging is authorized by invoking this audit.
 - Optional context: [background summary](references/xml-sitemap-background.md) preserves the supplied screenshot and official SEO distinctions. It is not an additional mandatory checklist.
