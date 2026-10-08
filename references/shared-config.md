@@ -4,6 +4,10 @@ Use the existing [sf-shared-config repository](https://github.com/timn-firstpage
 
 ## Reuse and preparation
 
+For a supplied `.seospider`, follow the shared [saved-crawl entry contract](https://github.com/timn-firstpage/On-_site_SF_shared_config/blob/main/references/saved-crawl-entry.md), reading its local copy when available. source.mode=saved_crawl and source.crawl_file are agent-owned inputs; relative paths resolve against the supplied config directory. Explicit supplied input wins over stale session IDs. Reuse matching exports or open once, share source fingerprint/crawl/export records across onsite flows, and preserve active/unsaved sessions and original inputs. No generic profile or new-crawl sitemap confirmation is required. No reader/import rejection gets manual saved-crawl Open + exact exports, not config Load + Start. Check output/runtime access before expensive retrieval.
+
+Saved crawl may lack XML/GSC evidence: reuse archives, then permitted bounded static reads, then report only material gaps. File readiness is not proof of complete audit evidence. These preflight steps do not tighten 11.7's agreed empty-result pass. Label historical versus current live evidence.
+
 1. Reuse site-matched, suitably dated exports/crawl with sufficient fields; historical settings need not all be reverified.
 2. Missing SF evidence + source.allow_new_crawl=true: route to the shared skill. Full-site default is bundled onsite-main-js; targeted-content is only for necessary selected-URL follow-up. Explicit invalid profile overrides need correction, not silent fallback.
 3. The shared skill delivers a verified profile copy to the SF host's real Downloads before manual Load; the user confirms profile/mode, site/sitemap, manually Starts and supervises, completes required Crawl Analysis and saves/exports to Downloads.

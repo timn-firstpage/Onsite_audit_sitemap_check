@@ -18,6 +18,10 @@
 
 ## 简单流程
 
+**支持直接提供已爬好的 `.seospider` 文件**：使用 `source.mode=saved_crawl` 和 `source.crawl_file`，或直接提供文件让 agent 解析路径。复用匹配导出，必要时通过 SF 支持的功能打开一次，与其他 onsite audits 共用结果；不重载 global config、不自动重爬。`allow_new_crawl=false` 不影响读取已有文件。没有 reader 时只要求用户打开已有 crawl 并导出指定结果。`.seospiderconfig` 是配置文件，不是 crawl。详见 [共用 saved-crawl 操作与报错说明](https://github.com/timn-firstpage/On-_site_SF_shared_config/blob/main/references/saved-crawl-entry.md)。
+
+运行前检查可写输出目录和实际 Excel runtime；复用相同来源的 robots、sitemap 和完整 SF 导出。导入失败只走一次人工 Open/export fallback；等待文件时返回 checkpoint，不持续轮询。原始 XML 或 GSC 数据缺失只影响相关检查；不会因文件成功打开就声称所有数据齐全。
+
 1. 复用现有证据；确有需要且允许新 crawl 时，交给共享配置 skill。
 2. 用户在 SF 确认 sitemap、手动 Start，完成分析后保存/导出；本 skill 不自动启动或重启。
 3. 从 robots.txt 和常见 CMS 路径发现 sitemap，读取 index 及子文件。
