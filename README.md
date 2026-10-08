@@ -8,7 +8,7 @@
 
 ## 使用
 
-将本仓库根目录安装或链接为 Codex skills 目录下的 `onsite-audit-sitemap`。SF 准备流程依赖另行安装的 `sf-shared-config`；已有可用 crawl/export 时无需重新配置。生成 Excel 使用当前环境可用的 spreadsheet skill/runtime。
+将本仓库根目录安装或链接为 Codex skills 目录下的 `onsite-audit-sitemap`。SF 准备流程依赖另行安装的 `sf-shared-config`；已有可用 crawl/export 时无需重新配置。Excel 由仓库内固定的 Python 生成器输出，依赖 openpyxl 和 Pillow；详见 [生成器运行说明](references/report-generator.md)。
 
 示例：
 
@@ -83,13 +83,18 @@ Checklist 始终输出九项；Initial Check 是本次初审结果，不要求�
 - [共享配置与证据交接](references/shared-config.md)
 - [原始截图背景摘要与官方说明](references/xml-sitemap-background.md)：背景参考，用户最终简化规则优先
 
-本包为 agent 执行的工作流，附一个仅使用 Python 标准库的结构校验器：
+本包为 agent 执行的工作流，附结构校验器和固定 Excel 生成器。Agent 判断结果，脚本按固定 schema 排版，不修改审计结论。在实际执行环境使用 Python 3.9+，一次性安装依赖；受管理的运行环境使用其提供的依赖安装方式：
 
 ```text
-python scripts/validate_findings.py path/to/findings.json
+python -m pip install -r requirements.txt
+python scripts/build_report.py --input path/to/findings.json --output-dir path/to/unique-run
 python -m unittest discover -s tests
 ```
 
-校验器不自动抓取、不判断 SEO、不生成 Excel。实际报告由 agent 使用可用 spreadsheet 工具生成；没有独立运行的全自动审计程序。Skill 结构、JSON 校验器及本地规则回归已验证；真实 SF/GSC 网站审计仍需实际数据，不能由静态验证代替。
+生成器内部已调用结构校验器，不必每次重复运行独立校验命令。九项必须齐全，只有 X 进入第二张表；零 X 也保留第二张表表头。每个 X 一行，多种原因／修正用编号行对应说明。自动检查文本、截图和写后读取完整性，并拒绝覆盖旧文件；遇到错误明确退出，保留 findings 和证据，修正后只重跑导出，不重跑 crawl。最终仍需检查两张表的排版。详见 [依赖、错误处理与团队部署](references/report-generator.md)。
+
+固定生成器能减少格式漂移，但不能保证零 bug，也不验证 SEO 判断是否真实。回归测试覆盖 schema、X 筛选、中文／公式样式文本、截图错误、防覆盖及写入失败。真实 SF/GSC 网站审计仍需实际数据，不能由静态验证代替。
+
+团队在 Multica 使用时需同步/刷新 skill，并在真正执行的机器或容器准备 Python 依赖、可读的 crawl/export/截图以及独立可写的 run 目录。无需依赖本机 Codex spreadsheet 工具；GitHub 导入也不会自动提供 SF/GSC 权限或同事电脑上的文件。Global config 的读取与 shared SF 流程保持不变。
 
 运行证据、客户 URL 列表、Excel、凭据和本机配置均保存在忽略的 run 目录。仓库不包含客户报告，不修改网站，不自动提交 GSC。
