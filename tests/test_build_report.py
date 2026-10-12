@@ -62,6 +62,23 @@ class Report(unittest.TestCase):
                 self.assertEqual(wb["Checklist"].max_row, 10)
                 self.assertEqual(wb["11. Sitemap"].max_row, 1)
 
+    def test_findings_and_human_instruction_are_separate_without_coverage(self):
+        self.data["checks"][0].update(result="X", finding="发现 noindex URL。", action="从 sitemap 移除此 URL。")
+        for check in self.data["checks"]:
+            check.pop("coverage", None)
+        wb = self.workbook(self.generate())
+        self.assertEqual([c.value for c in wb["Checklist"][1]],
+                         ["Item No.", "Item Name", "Initial Check", "Findings", "Instruction"])
+        self.assertEqual(wb["Checklist"]["D2"].value, "发现 noindex URL。")
+        self.assertEqual(wb["Checklist"]["E2"].value, "从 sitemap 移除此 URL。")
+        self.assertEqual(wb["11. Sitemap"]["C2"].value, "从 sitemap 移除此 URL。")
+
+    def test_legacy_coverage_is_not_exported_and_pass_instruction_can_be_blank(self):
+        self.data["checks"][0].update(result="√", finding="抽查 3 项，发现 loc。", action="", coverage="PRIVATE SOURCE NOTE")
+        wb = self.workbook(self.generate())
+        self.assertIsNone(wb["Checklist"]["E2"].value)
+        self.assertNotIn("PRIVATE SOURCE NOTE", str(list(wb["Checklist"].values)))
+
     def test_unicode_filename_and_formula_like_text_are_preserved(self):
         self.data["site_name"] = '香港品牌/網站'
         for n, text in enumerate(('=HYPERLINK("https://example.com")', '+cmd', '-123', '@SUM(A1)')):
@@ -87,7 +104,7 @@ class Report(unittest.TestCase):
                        lambda d: d.update(audit_date="2026-99-99"),
                        lambda d: d["checks"][0].update(finding="bad\x00text"),
                        lambda d: d["checks"][0].update(finding="a" * 32768),
-                       lambda d: d["checks"][0].update(coverage="line\n" * 40)):
+                       lambda d: d["checks"][0].update(action="line\n" * 40)):
             data = deepcopy(self.data)
             mutate(data)
             with self.assertRaises(ValueError):

@@ -9,7 +9,7 @@ import unicodedata
 
 from validate_findings import validate
 
-CHECK_HEADERS = ["Item No.", "Item Name", "Initial Check", "Findings", "Coverage"]
+CHECK_HEADERS = ["Item No.", "Item Name", "Initial Check", "Findings", "Instruction"]
 ISSUE_HEADERS = ["Sitemaps", "URLs Example", "Instructions", "Screenshots (If Applicable)"]
 INVALID_XML = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ud800-\udfff\ufffe\uffff]")
 
@@ -81,13 +81,12 @@ def build_report(data, output_dir, input_dir):
             rows = [headers]
             row_images = [[]]
             for check in checks:
-                summary = check["finding"] + ("\n" + check["action"] if check["action"] else "")
                 if name == "Checklist":
-                    rows.append([check["id"], check["item_name"], check["result"], summary, check["coverage"]])
+                    rows.append([check["id"], check["item_name"], check["result"], check["finding"], check["action"]])
                     row_images.append([])
                 elif check["result"] == "X":
                     rows.append([f"{check['id']} {check['finding']}", "\n".join(check["urls"]) or "N/A",
-                                 summary, "" if check["screenshots"] else "N/A"])
+                                 check["action"], "" if check["screenshots"] else "N/A"])
                     row_images.append(check["screenshots"])
             expected[name] = rows
             expected_images[name] = sum(len(paths) for paths in row_images)

@@ -14,6 +14,18 @@ def record():
 
 
 class Validation(unittest.TestCase):
+    def test_coverage_is_not_required(self):
+        data = record()
+        for check in data["checks"]:
+            check.pop("coverage")
+        self.assertEqual(module.validate(data), [])
+
+    def test_yes_no_are_not_result_labels(self):
+        for result in ("Yes", "No", "yes", "no"):
+            data = record()
+            data["checks"][0]["result"] = result
+            self.assertTrue(module.validate(data))
+
     def test_complete_unresolved_delivery_is_valid(self):
         self.assertEqual(module.validate(record()), [])
 

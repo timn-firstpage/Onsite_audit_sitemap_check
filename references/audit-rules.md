@@ -1,6 +1,6 @@
 # Nine-check decision rules
 
-These decisions reflect the user's final instructions from 2026-10-06. Keep the flow simple. A heuristic pass is not a claim of verified CMS internals, complete image coverage or Google indexing. Report language follows config/user preference.
+These decisions include the user's simplified rules from 2026-10-12. Keep findings and human next steps short and separate. Use √ and X, never Yes/No; retain N/A and Human check for inapplicable or unavailable evidence. A sample pass is not a full technical audit. Report language follows config/user preference.
 
 ## Common result rules
 
@@ -22,19 +22,22 @@ Keep the user's preliminary screen: open the sitemap/index and children; inspect
 
 Confirmed invalid/nonstandard payload or effective bot block => X with the actual reason. Insufficient screening evidence => Human check. State “dynamic preliminary screen passed” rather than “automatic updates verified”. Treat TXT/RSS/Atom as supported format alternatives; do not call HTML a Google-submittable sitemap. Do not add a separate audit row or expand this into a CMS architecture investigation.
 
-## 11.3 Are <loc> tags used and www/non-www versions accurate? (Compulsory)
+## 11.3 Are <loc> tags present? (Sample up to 3)
 
-Check XML loc elements contain absolute URLs. Index loc points to a sitemap; urlset loc points to a page. Compare page URLs with observed final destinations and the site's intended www/non-www version using existing SF response/redirect evidence. Missing/invalid loc, wrong hostname variant or redirected page loc => X with examples. Do not add extensive canonical comparison here; known canonicalised URLs are handled in 11.7. Intentional subdomains/locales are not automatically wrong. Unknown response coverage => Human check unless an issue is already confirmed.
+Sample up to three distinct sitemap entries from XML already loaded (use all available entries if fewer than three). An entry is a url element in a urlset, or a sitemap element in an index. An actual sitemap <loc> element in any sampled entry => √. A comment, escaped text or image:loc alone does not count. Do not check www/non-www, redirects, canonical or final destinations for 11.3. If all sampled entries are readable and none has <loc>, mark X. If no loc is found and the sample cannot be read, use Human check; no discovered sitemap => N/A. Record selected entries internally. Findings can say “抽查 3 项，发现 loc。” with blank Instruction. This is a presence sample, not URL correctness validation.
 
 ## 11.4 Are last modified tags being used?
 
 Find an actual sitemap `<lastmod>` element (including one in a sitemap index) => √ under the user's presence-only test. Do not require every page to have it, validate historical accuracy, or add stricter date freshness criteria. A comment or text mentioning lastmod is not an element. Complete inspected XML with none => X, explain “missing optional lastmod; improvement recommendation”, not invalid XML. Incomplete evidence with none found => Human check. No sitemap => N/A.
 
-## 11.5 Are robots-blocked and noindex pages excluded?
+## 11.5 Is the sitemap unblocked, with no noindex pages listed?
 
-Match sitemap page URLs against effective Googlebot robots.txt permissions and SF meta robots / HTTP X-Robots-Tag noindex evidence. Use rule precedence/user-agent selection, not raw substring matching of Disallow. `nofollow` alone is not noindex. Robots blocking is a crawl restriction, not proven deindexing.
+Use existing SF results only, reusing the exports used for 11.7. This check has two simple parts:
 
-Any confirmed blocked/noindex page in sitemap => X and identify it. Complete relevant checks with none => √. Missing directives/permissions/rows => Human check, not pass. A readable robots.txt absent by confirmed 404 means no robots-file blocking, but does not waive the noindex check. Sitemap file's own noindex header is not evidence that listed pages are noindex.
+1. Check SF's robots-blocked result for the sitemap file URL(s), not every listed page. Known sitemap files not blocked => this part passes. A confirmed blocked sitemap file => X. A successful HTTP fetch alone is not an SF robots result. No usable SF robots result => this part is unresolved; do not fetch/parse robots rules independently.
+2. Read the available SF noindex page result once. Empty/zero/null/NaN => this part passes immediately. Only when noindex page records exist, intersect their URLs with the already loaded sitemap page URLs. Any match => X; no matches => this part passes. An existing combined non-indexable result with reason Noindex can supply this subset; an empty non-indexable result also means no noindex candidates. If candidates exist but the sitemap inventory needed for comparison is unavailable, use Human check. No usable SF result or failed read is missing evidence, not an empty result.
+
+Any confirmed issue in either part => X, even if the other part is unresolved. Both parts pass => √. Otherwise Human check; no discovered sitemap => N/A. Do not perform separate meta/header requests or require extra analysis-completion checks. Keep the result concise: “Sitemap 未被阻挡，未发现 noindex 页面。” An X instruction can say “允许抓取此 sitemap。” or “从 sitemap 移除此 noindex URL。” Sitemap file noindex is not page noindex.
 
 ## 11.6 Are paginated URLs avoided?
 
@@ -46,9 +49,9 @@ Any confirmed page 2+ in sitemap => X under this user's checklist; otherwise √
 
 Use the available SF “Non-Indexable URLs in Sitemap” result. Under the user's revised simple rule, no matching URL records, an empty result, zero, null or NaN => √: “No non-indexable URLs found in the supplied sitemap results.” One or more listed non-indexable URL records => X. Do not require a separate crawl-completion, Crawl Analysis or full-coverage verification before accepting an empty result, and do not turn that empty/NaN result into Human check. If using a broader SF non-indexable URL export, match its URLs against the sitemap page URL inventory; no matches => √, matches => X.
 
-This rule concerns absence of records in available evidence, not an inability to access any evidence. No SF result/export or usable comparison data at all, or a failed tool read => Human check. No discovered sitemap => N/A. Preserve known contradictory URL evidence as X rather than overriding it with an empty filter. State the actual source/coverage in Checklist Coverage; a simplified pass does not establish Google index status or verified full-crawl completion. Only X enters the second worksheet.
+This rule concerns absence of records in available evidence, not an inability to access any evidence. No SF result/export or usable comparison data at all, or a failed tool read => Human check. No discovered sitemap => N/A. Preserve known contradictory URL evidence as X rather than overriding it with an empty filter. Store source/scope in the run archive, not a Coverage column. Only X enters the second worksheet.
 
-Report 3xx/4xx/5xx, noindex and canonical-to-other-URL reasons. Distinguish transient 403/429/timeouts/tool failures from confirmed durable site defects and suggest verification when needed. Do not delete important pages merely because they are broken: recommend repair or replacement/removal according to intended indexing. Missing canonical alone is not non-indexable. SF indexability is not actual Google index status. Checks 11.5/11.7 may overlap; keep both results without duplicating long evidence lists.
+Report existing SF non-indexable reasons, including response status, noindex and canonical-to-other-URL, without rechecking them independently. 11.5 uses the noindex subset; 11.7 uses all non-indexable records. Load exports once, create each needed URL intersection once, and reuse noindex matches in both checks. A noindex match makes both checks X; retain each required detail row but keep the wording short and reference the same evidence. Redirect/canonical-only records can make 11.7 X while 11.5 passes. An empty noindex subset alone does not prove the broader 11.7 result is empty. Instructions concern the sitemap entry, not deleting the actual website page.
 
 ## 11.8 If e-commerce: are appropriate product images included?
 

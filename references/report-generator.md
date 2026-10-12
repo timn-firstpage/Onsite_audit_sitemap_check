@@ -17,6 +17,8 @@ Before collecting audit evidence, confirm imports and that the configured run ro
 
 ## Export once
 
+Checklist columns are `Item No.`, `Item Name`, `Initial Check`, `Findings`, `Instruction`. The JSON `finding` and `action` fields go into separate columns. `action` means the person's next step; keep it short, and use an empty string when no action is needed. Legacy `coverage` is accepted as internal metadata but is neither required nor exported. The issue sheet keeps its four existing columns; its Instructions cell contains only `action`. Status labels are √/X, N/A and Human check, never Yes/No.
+
 ```text
 python scripts/build_report.py --input path/to/run/findings.json --output-dir path/to/run
 ```
