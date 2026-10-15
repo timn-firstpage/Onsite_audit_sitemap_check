@@ -5,7 +5,7 @@ description: Audit website sitemaps using Screaming Frog evidence and bounded si
 
 # Onsite Sitemap Audit
 
-Produce `{site name}_sitemap_audit_{YYYY-MM-DD}.xlsx` for a supplied site using the nine checks in [audit rules](references/audit-rules.md). This is a simple first-pass audit with explicit user-selected heuristics. Do not silently replace those heuristics with a stricter SEO assessment.
+Produce `11.1-11.9_{site name}_sitemap_audit_{YYYY-MM-DD}.xlsx` for a supplied site using the nine checks in [audit rules](references/audit-rules.md). The prefix is the covered item range, including N/A and Human check items. This is a simple first-pass audit with explicit user-selected heuristics. Do not silently replace those heuristics with a stricter SEO assessment.
 
 ## Inputs and preparation
 

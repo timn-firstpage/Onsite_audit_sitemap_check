@@ -48,7 +48,7 @@
 
 ## Excel 输出
 
-文件名：**`{site name}_sitemap_audit_{date}.xlsx`**，date 为 `YYYY-MM-DD`。
+文件名：**`11.1-11.9_{site name}_sitemap_audit_{date}.xlsx`**，date 为 `YYYY-MM-DD`。开头是本报告覆盖的 item range；部分项目为 N/A 或 Human check 时也保留此范围。
 
 两个 worksheet，按以下顺序输出。
 

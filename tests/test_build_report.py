@@ -84,7 +84,7 @@ class Report(unittest.TestCase):
         for n, text in enumerate(('=HYPERLINK("https://example.com")', '+cmd', '-123', '@SUM(A1)')):
             self.data["checks"][n].update(finding=text, action="", result="√", coverage="中文 URL https://example.com/產品")
         path = self.generate()
-        self.assertEqual(path.name, "香港品牌_網站_sitemap_audit_2026-10-06.xlsx")
+        self.assertEqual(path.name, "11.1-11.9_香港品牌_網站_sitemap_audit_2026-10-06.xlsx")
         wb = self.workbook(path)
         for n in range(4):
             cell = wb["Checklist"].cell(n + 2, 4)

@@ -1,6 +1,6 @@
 # Output contract
 
-Filename: `{site name}_sitemap_audit_{YYYY-MM-DD}.xlsx`. User-provided site name wins; otherwise use the hostname without leading www. Replace filename-invalid characters, preserving meaningful Unicode. Date uses output.audit_date if supplied, otherwise the user's timezone/local date (Asia/Hong_Kong in the originating session), never an unrelated host date.
+Filename: `11.1-11.9_{site name}_sitemap_audit_{YYYY-MM-DD}.xlsx`. Prefix the covered checklist range, including N/A and Human check items; this is not a count of passed checks. User-provided site name wins; otherwise use the hostname without leading www. Replace filename-invalid characters, preserving meaningful Unicode. Date uses output.audit_date if supplied, otherwise the user's timezone/local date (Asia/Hong_Kong in the originating session), never an unrelated host date.
 
 Create a unique directory beneath configured run_root for each delivery. Do not append version text to the required filename or overwrite another report. Keep raw evidence, findings.json, manifest.json and sf-handover.json local/ignored.
 

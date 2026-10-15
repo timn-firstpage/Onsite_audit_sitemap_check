@@ -23,7 +23,7 @@ Checklist columns are `Item No.`, `Item Name`, `Initial Check`, `Findings`, `Ins
 python scripts/build_report.py --input path/to/run/findings.json --output-dir path/to/run
 ```
 
-The calling agent resolves `output.audit_date` or the configured/user timezone date into `audit_date` before export. The generator requires that explicit ISO date and does not infer a host timezone. It uses site_name verbatim except replacing filename-invalid characters and trimming leading/trailing dots/spaces. Empty/unreasonably long names fail clearly.
+The output filename is `11.1-11.9_{site name}_sitemap_audit_{YYYY-MM-DD}.xlsx`; the prefix covers all nine checklist items regardless of status. The calling agent resolves `output.audit_date` or the configured/user timezone date into `audit_date` before export. The generator requires that explicit ISO date and does not infer a host timezone. It uses site_name verbatim except replacing filename-invalid characters and trimming leading/trailing dots/spaces. Empty/unreasonably long names fail clearly.
 
 The generator validates all nine records, sorts 11.1–11.9, writes `Checklist` and `11. Sitemap`, and exports one detail row for each X. Other statuses stay in Checklist. Zero X leaves a headers-only issue sheet. Missing screenshots are represented by N/A when the screenshot list is empty; a supplied but missing/corrupt X screenshot is an error, never silently dropped. PNG/JPEG screenshots are embedded proportionally and vertically stacked. Long summaries or too many screenshots that exceed a readable Excel row are rejected with the row number; shorten the report summary/examples and retain complete evidence separately.
 
