@@ -14,6 +14,13 @@ def record():
 
 
 class Validation(unittest.TestCase):
+    def test_117_failure_requires_affected_sf_urls(self):
+        data = record()
+        data["checks"][6].update(result="X", action="Fix sitemap entries", urls=[])
+        self.assertTrue(any("11.7" in error and "URL" in error for error in module.validate(data)))
+        data["checks"][6]["urls"] = ["https://example.com/redirected-original"]
+        self.assertEqual(module.validate(data), [])
+
     def test_coverage_is_not_required(self):
         data = record()
         for check in data["checks"]:

@@ -59,6 +59,8 @@ def validate(data):
                 errors.append(f"{prefix}: {key} must be a list of nonempty strings")
         if isinstance(check.get("urls"), list) and any(not is_url(x) for x in check["urls"]):
             errors.append(f"{prefix}: urls must be absolute HTTP(S) URLs")
+        if ident == "11.7" and check.get("result") == "X" and not check.get("urls"):
+            errors.append(f"{prefix}: affected SF original URLs required for 11.7 X; do not export N/A")
     if len(seen) != 9 or set(seen) != IDS:
         errors.append("checks must contain 11.1–11.9 exactly once")
     return errors

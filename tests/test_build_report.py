@@ -39,7 +39,7 @@ class Report(unittest.TestCase):
         self.data["checks"][0].update(result="X", finding="Redirect in sitemap", urls=["https://example.com/old"])
         self.data["checks"][1].update(result="√")
         self.data["checks"][2].update(result="N/A")
-        self.data["checks"][6].update(result="X", finding="Non-indexable URL")
+        self.data["checks"][6].update(result="X", finding="Non-indexable URL", urls=["https://example.com/noindex"])
         self.data["checks"].reverse()
         wb = self.workbook(self.generate())
         self.assertEqual(wb.sheetnames, ["Checklist", "11. Sitemap"])
@@ -61,6 +61,16 @@ class Report(unittest.TestCase):
                 wb = self.workbook(path)
                 self.assertEqual(wb["Checklist"].max_row, 10)
                 self.assertEqual(wb["11. Sitemap"].max_row, 1)
+
+    def test_117_lists_all_original_sf_urls_including_redirects_without_sampling(self):
+        urls = ["https://example.com/old-redirect", "https://example.com/noindex",
+                "https://example.com/noncanonical"] + [f"https://example.com/old/{n}" for n in range(50)]
+        self.data["checks"][6].update(result="X", finding="SF non-indexable URLs", action="Fix these sitemap entries", urls=urls)
+        wb = self.workbook(self.generate())
+        details = wb["11. Sitemap"]
+        self.assertEqual(details.max_row, len(urls) + 1)
+        self.assertEqual([details.cell(n, 2).value for n in range(2, details.max_row + 1)], urls)
+        self.assertTrue(all(details.cell(n, 1).value.startswith("11.7 ") for n in range(2, details.max_row + 1)))
 
     def test_findings_and_human_instruction_are_separate_without_coverage(self):
         self.data["checks"][0].update(result="X", finding="发现 noindex URL。", action="从 sitemap 移除此 URL。")

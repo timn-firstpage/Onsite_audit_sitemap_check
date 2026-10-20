@@ -85,9 +85,12 @@ def build_report(data, output_dir, input_dir):
                     rows.append([check["id"], check["item_name"], check["result"], check["finding"], check["action"]])
                     row_images.append([])
                 elif check["result"] == "X":
-                    rows.append([f"{check['id']} {check['finding']}", "\n".join(check["urls"]) or "N/A",
-                                 check["action"], "" if check["screenshots"] else "N/A"])
-                    row_images.append(check["screenshots"])
+                    url_groups = check["urls"] if check["id"] == "11.7" else ["\n".join(check["urls"]) or "N/A"]
+                    for index, urls in enumerate(url_groups):
+                        screenshots = check["screenshots"] if index == 0 else []
+                        rows.append([f"{check['id']} {check['finding']}", urls,
+                                     check["action"], "" if screenshots else "N/A"])
+                        row_images.append(screenshots)
             expected[name] = rows
             expected_images[name] = sum(len(paths) for paths in row_images)
             for row_no, (values, paths) in enumerate(zip(rows, row_images), 1):
